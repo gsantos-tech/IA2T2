@@ -1,0 +1,90 @@
+# 🧠 NexSale AI — Sistema Inteligente de Recomendação e Previsão de Vendas
+
+## 🎯 Problema / Dor Identificada
+Empresários do ramo alimentício (bares, restaurantes e lanchonetes) tomam decisões de compra e precificação baseadas em intuição, o que resulta em:
+
+- Estoques desequilibrados (produtos vencendo ou faltando);
+- Desperdício de insumos;
+- Perda de oportunidades de venda em períodos de alta demanda.
+
+Essas decisões poderiam ser **otimizadas automaticamente** com base no histórico de vendas e comportamento do cliente.
+
+---
+
+## 💡 Solução Proposta
+O **NexSale AI** é um módulo de **Inteligência Artificial integrado ao NexSale** capaz de:
+
+1. **Prever vendas futuras** de produtos (em escala diária/semanal) com base em:
+   - Histórico de vendas;
+   - Dia da semana / horário;
+   - Categorias de produto;
+   - Eventos sazonais (ex: feriados);
+   - Dados do cliente (bar, restaurante, etc.).
+
+2. **Gerar recomendações automáticas**:
+   - Reposição de estoque ideal;
+   - Sugestões de promoções para itens de baixa saída;
+   - Alertas de possíveis faltas ou excessos de produtos.
+
+---
+
+## 🧩 Modalidade Escolhida
+**Modalidade 1 – Treinamento de rede neural supervisionada.**  
+Será desenvolvido e treinado um modelo próprio (ex: Rede Neural Multilayer Perceptron ou LSTM) para prever a demanda futura de produtos com base em séries temporais.
+
+---
+
+## ⚙️ Abordagem Técnica
+
+### 1. Dataset
+- Extraído diretamente do banco multi-tenant do NexSale (tabelas `sales`, `products`, `clients`).
+- Pré-processamento via script Python:
+  - Normalização de valores (`quantidade_vendida`, `data_venda`, `categoria`, `dia_semana`);
+  - Engenharia de atributos (tendência de vendas, média móvel, sazonalidade, hora pico, etc.);
+  - Divisão treino/validação/teste (70/15/15).
+
+### 2. Modelagem
+- Modelos candidatos:
+  - **MLP (Multilayer Perceptron)** para regressão de demanda;
+  - **LSTM** (Long Short-Term Memory) caso optemos por capturar temporalidade.
+- Métricas principais:
+  - **RMSE (Root Mean Square Error)**;
+  - **MAPE (Erro Percentual Absoluto Médio)**.
+
+### 3. Treinamento
+- Implementado em **Python (TensorFlow/Keras)**;
+- Cross-validation k=5;
+- Salvamento do modelo final (`best_model.pkl`) e parâmetros (`params.json`).
+
+### 4. Integração com o NexSale
+- Endpoint em `/api/ai/recommendations` (Rust backend);
+- Script Python que gera previsões diárias e atualiza tabela `product_recommendations`;
+- Exibição no painel administrativo com:
+  - “Previsão de vendas para amanhã”;
+  - “Produtos recomendados para reposição”;
+  - “Itens com baixa rotatividade”.
+
+---
+
+## 🧪 Resultados Esperados
+- Gráficos de previsão vs vendas reais;
+- Comparação de métricas entre modelos (MLP, LSTM, baseline linear);
+- Logs e prints do módulo integrado ao painel do NexSale;
+- Demonstração funcional no pitch final.
+
+---
+
+## 🚀 Impacto e Escalabilidade
+- Otimiza estoque e aumenta o faturamento dos clientes;
+- Torna o NexSale mais competitivo (SaaS com inteligência embutida);
+- Facilita expansão futura: integração com previsão meteorológica, promoções automáticas e preços dinâmicos.
+
+---
+
+## 📦 Entregáveis
+- Repositório GitHub com:
+  - `README.md` explicando arquitetura, dataset e como rodar;
+  - Scripts Python: `prepare_dataset.py`, `train_model.py`, `evaluate_model.py`, `generate_predictions.py`;
+  - Artefatos: `best_model.pkl`, `metrics.json`, gráficos `.png`;
+  - Pasta `integration/` com endpoint Rust simulando recomendação;
+  - Slides do pitch (7 min).
